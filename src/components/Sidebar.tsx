@@ -62,7 +62,7 @@ export default function Sidebar({
       )}
 
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-gray-100 bg-white transition-all duration-300 lg:static lg:z-0 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-[#e0e0e0] bg-[#f3f2f1] transition-all duration-300 lg:static lg:z-0 lg:translate-x-0 ${
           mobileOpen 
             ? 'translate-x-0 w-64 shadow-2xl' 
             : '-translate-x-full lg:translate-x-0'
@@ -90,7 +90,7 @@ export default function Sidebar({
         )}
 
         {/* Sidebar Navigation Items */}
-        <nav className="flex-1 space-y-1.5 px-3 py-6 overflow-y-auto">
+        <nav className="flex-1 space-y-0.5 px-2 py-4 overflow-y-auto">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -101,17 +101,17 @@ export default function Sidebar({
                   onSelectTab(item.id);
                   onCloseMobile?.();
                 }}
-                className={`flex w-full items-center gap-3.5 rounded-full py-3 px-4 text-sm font-medium transition-all ${
+                className={`flex w-full items-center gap-3.5 py-2 px-3 text-xs font-bold tracking-tight transition-all duration-100 ${
                   isActive 
-                    ? 'bg-blue-50 text-blue-700 shadow-sm' 
-                    : `text-gray-600 ${item.bg}`
+                    ? 'bg-white text-[#201f1e] border-l-[3px] border-[#0078d4] shadow-xs' 
+                    : 'text-[#323130] hover:bg-[#edebe9] border-l-[3px] border-transparent'
                 }`}
               >
                 <div className="flex items-center justify-center">
-                  <Icon className={`h-5 w-5 ${isActive ? 'text-blue-600' : item.color}`} />
+                  <Icon className={`h-4 w-4 ${isActive ? 'text-[#0078d4] stroke-[2.2]' : 'text-[#605e5c]'}`} />
                 </div>
                 {/* Always display labels in mobile slide-out, on desktop respect collapse status */}
-                <span className={`truncate transition-opacity duration-200 ${
+                <span className={`truncate ${
                   collapsed ? 'lg:hidden' : 'lg:inline'
                 }`}>
                   {item.label}

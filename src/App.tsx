@@ -601,28 +601,28 @@ export default function App() {
         </main>
       </div>
 
-      {/* Floating Action Button (FAB) (Material style) */}
+      {/* Floating Action Button (FAB) (Office style) */}
       <button 
         onClick={() => setShowFabModal(true)}
-        className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xl hover:bg-blue-700 hover:scale-105 transition active:scale-95"
+        className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex h-12 w-12 items-center justify-center rounded-md bg-[#0078d4] text-white shadow-md hover:bg-[#106ebe] hover:scale-105 transition active:scale-95 duration-150 border border-[#005a9e]/40"
         title="Quick micro-note draft capture"
       >
-        <Plus className="h-6 w-6" />
+        <Plus className="h-5.5 w-5.5 stroke-[2.4]" />
       </button>
 
       {/* Mobile & Tablet Elegant Bottom Navigation Bar */}
-      <nav id="mobile-bottom-nav" className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-gray-100 bg-white/95 backdrop-blur-md px-4 shadow-lg lg:hidden">
+      <nav id="mobile-bottom-nav" className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-[#e0e0e0] bg-[#faf9f8]/95 backdrop-blur-md px-4 shadow-md lg:hidden">
         <button
           onClick={() => {
             setActiveTab('dashboard');
             setMobileMenuOpen(false);
           }}
           className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
-            activeTab === 'dashboard' ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+            activeTab === 'dashboard' ? 'text-[#0078d4] font-bold' : 'text-[#605e5c] hover:text-[#201f1e]'
           }`}
         >
-          <LayoutDashboard className="h-5 w-5" />
-          <span className="text-[10px]">Dashboard</span>
+          <LayoutDashboard className="h-4.5 w-4.5" />
+          <span className="text-[9px] font-bold uppercase tracking-wider">Dashboard</span>
         </button>
 
         <button
@@ -631,11 +631,11 @@ export default function App() {
             setMobileMenuOpen(false);
           }}
           className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
-            activeTab === 'subjects' ? 'text-emerald-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+            activeTab === 'subjects' ? 'text-[#107c41] font-bold' : 'text-[#605e5c] hover:text-[#201f1e]'
           }`}
         >
-          <BookOpen className="h-5 w-5" />
-          <span className="text-[10px]">Syllabus</span>
+          <BookOpen className="h-4.5 w-4.5" />
+          <span className="text-[9px] font-bold uppercase tracking-wider">Syllabus</span>
         </button>
 
         <button
@@ -644,11 +644,11 @@ export default function App() {
             setMobileMenuOpen(false);
           }}
           className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
-            activeTab === 'planner' ? 'text-amber-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+            activeTab === 'planner' ? 'text-[#d83b01] font-bold' : 'text-[#605e5c] hover:text-[#201f1e]'
           }`}
         >
-          <Calendar className="h-5 w-5" />
-          <span className="text-[10px]">Planner</span>
+          <Calendar className="h-4.5 w-4.5" />
+          <span className="text-[9px] font-bold uppercase tracking-wider">Planner</span>
         </button>
 
         <button
@@ -657,31 +657,31 @@ export default function App() {
             setMobileMenuOpen(false);
           }}
           className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
-            activeTab === 'mocks' ? 'text-rose-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+            activeTab === 'mocks' ? 'text-[#a4262c] font-bold' : 'text-[#605e5c] hover:text-[#201f1e]'
           }`}
         >
-          <Award className="h-5 w-5" />
-          <span className="text-[10px]">Mocks</span>
+          <Award className="h-4.5 w-4.5" />
+          <span className="text-[9px] font-bold uppercase tracking-wider">Mocks</span>
         </button>
 
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
-            mobileMenuOpen ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+            mobileMenuOpen ? 'text-[#0078d4] font-bold' : 'text-[#605e5c] hover:text-[#201f1e]'
           }`}
         >
-          <Menu className="h-5 w-5" />
-          <span className="text-[10px]">All Menus</span>
+          <Menu className="h-4.5 w-4.5" />
+          <span className="text-[9px] font-bold uppercase tracking-wider">Menu</span>
         </button>
       </nav>
 
       {/* FAB Modal popup */}
       {showFabModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-fade-in">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#201f1e]/40 backdrop-blur-xs p-4 animate-fade-in">
+          <div className="w-full max-w-md rounded-md bg-white p-6 shadow-xl border border-[#e0e0e0] space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-extrabold text-gray-900 flex items-center gap-1.5 text-base">
-                <BookOpen className="h-4.5 w-4.5 text-blue-600 animate-pulse" /> Capture Quick Revision Note
+              <h3 className="font-extrabold text-gray-900 flex items-center gap-1.5 text-sm uppercase tracking-wider">
+                <BookOpen className="h-4 w-4 text-[#0078d4]" /> Capture Quick Revision Note
               </h3>
               <button 
                 onClick={() => setShowFabModal(false)}
