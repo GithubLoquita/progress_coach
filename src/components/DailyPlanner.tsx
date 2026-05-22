@@ -17,26 +17,33 @@ import {
   TrendingUp,
   Tag
 } from 'lucide-react';
-import { DailyTask, Subject } from '../types';
+import { DailyTask, Subject, Chapter, MockTest } from '../types';
+import AiPlannerService from './AiPlannerService';
 
 interface DailyPlannerProps {
   tasks: DailyTask[];
   subjects: Subject[];
+  chapters: Chapter[];
+  mocks: MockTest[];
   onToggleTask: (id: string) => void;
   onAddTask: (task: Omit<DailyTask, 'id'>) => void;
   onDeleteTask: (id: string) => void;
   onSetStatus: (id: string, status: 'COMPLETED' | 'PENDING' | 'MISSED') => void;
   onAddToast: (msg: string, type: 'success' | 'info' | 'warning' | 'error') => void;
+  onApplyGeneratedSchedule?: (newTasks: Omit<DailyTask, 'id'>[]) => void;
 }
 
 export default function DailyPlanner({
   tasks,
   subjects,
+  chapters,
+  mocks,
   onToggleTask,
   onAddTask,
   onDeleteTask,
   onSetStatus,
-  onAddToast
+  onAddToast,
+  onApplyGeneratedSchedule
 }: DailyPlannerProps) {
   const [activeLayout, setActiveLayout] = useState<'KANBAN' | 'TIMELINE'>('KANBAN');
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -86,6 +93,17 @@ export default function DailyPlanner({
 
   return (
     <div className="space-y-6">
+      {/* AI Study Plan suggestions section */}
+      <AiPlannerService 
+        subjects={subjects}
+        chapters={chapters}
+        mocks={mocks}
+        tasks={tasks}
+        onAddTask={onAddTask}
+        onApplyGeneratedSchedule={onApplyGeneratedSchedule}
+        onAddToast={onAddToast}
+      />
+
       {/* Dynamic Header with Metric chips */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

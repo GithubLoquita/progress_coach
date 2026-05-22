@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Search, Flame, Bell, Sparkles, Command, SlidersHorizontal, BookOpen, Clock } from 'lucide-react';
+import { Search, Flame, Bell, Sparkles, Command, SlidersHorizontal, BookOpen, Clock, Menu } from 'lucide-react';
 import { Subject, DailyTask, StudyNote } from '../types';
 
 interface HeaderProps {
@@ -15,6 +15,7 @@ interface HeaderProps {
   tasks: DailyTask[];
   onNavigateToTab: (tabId: string) => void;
   onAddToast: (msg: string, type: 'success' | 'info' | 'warning' | 'error') => void;
+  onToggleMobileMenu?: () => void;
 }
 
 export default function Header({ 
@@ -24,7 +25,8 @@ export default function Header({
   notes, 
   tasks,
   onNavigateToTab,
-  onAddToast
+  onAddToast,
+  onToggleMobileMenu
 }: HeaderProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -58,17 +60,27 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white px-6">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white px-4 md:px-6">
       {/* Brand & Decorative Badge */}
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-soft">
+      <div className="flex items-center gap-2 md:gap-3">
+        {onToggleMobileMenu && (
+          <button
+            onClick={onToggleMobileMenu}
+            className="rounded-xl p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:outline-hidden lg:hidden"
+            title="Open Application Menu"
+            aria-label="Toggle navigation drawer"
+          >
+            <Menu className="h-5.5 w-5.5" />
+          </button>
+        )}
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-soft shrink-0">
           <Sparkles className="h-5 w-5" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-gray-900">
+          <h1 className="text-sm md:text-lg font-semibold tracking-tight text-gray-900 whitespace-nowrap">
             WBCS Coach
           </h1>
-          <p className="text-[10px] font-medium tracking-wider text-blue-600 uppercase">
+          <p className="text-[9px] md:text-[10px] font-medium tracking-wider text-blue-600 uppercase whitespace-nowrap">
             Progress System
           </p>
         </div>
@@ -165,28 +177,31 @@ export default function Header({
       </div>
 
       {/* Right Actions Block */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         {/* Streak chip with real-time visual heat indicator - Google style */}
         <div 
           onClick={() => onNavigateToTab('motivation')}
-          className="flex cursor-pointer items-center gap-1.5 rounded-full bg-amber-50 px-3.5 py-1.5 text-xs font-semibold text-amber-800 transition-all hover:bg-amber-100"
+          className="flex cursor-pointer items-center gap-1 sm:gap-1.5 rounded-full bg-amber-50 px-2 sm:px-3.5 py-1.5 text-xs font-semibold text-amber-800 transition-all hover:bg-amber-100 shrink-0"
           title="Daily Study Streak"
         >
-          <Flame className="h-4.5 w-4.5 text-amber-600 fill-amber-500 animate-pulse" />
-          <span>{streak} Day Streak</span>
+          <Flame className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-amber-600 fill-amber-500 animate-pulse" />
+          <span>
+            <span className="hidden sm:inline">{streak} Day Streak</span>
+            <span className="sm:hidden">{streak}d</span>
+          </span>
         </div>
 
         {/* Notifications and Calendar Shortcut triggers */}
         <button 
           onClick={() => onNavigateToTab('reminders')}
-          className="relative rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+          className="relative rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors shrink-0"
         >
           <Bell className="h-5 w-5" />
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-600"></span>
         </button>
 
         {/* Rounded Profile Photo avatar - Google style */}
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 font-bold text-white shadow-soft">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 font-bold text-white shadow-soft shrink-0">
           S
         </div>
       </div>

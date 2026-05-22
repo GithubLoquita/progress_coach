@@ -51,12 +51,13 @@ import ReminderManager from './components/ReminderManager';
 import ToastContainer from './components/ToastContainer';
 
 // Additional visual layouts
-import { Plus, Flame, Clock, Sparkles, BookOpen, AlertCircle, Calendar } from 'lucide-react';
+import { Plus, Flame, Clock, Sparkles, BookOpen, AlertCircle, Calendar, LayoutDashboard, Award, Menu } from 'lucide-react';
 
 export default function App() {
   // Navigation states
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Core App states loaded dynamically from localStorage or mocked seed arrays
   const [subjects, setSubjects] = useState<Subject[]>(() => {
@@ -299,6 +300,19 @@ export default function App() {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
   };
 
+  const handleApplyGeneratedSchedule = (newTasks: Omit<DailyTask, 'id'>[]) => {
+    setTasks(prev => {
+      // Keep only recurring daily routines to protect static defaults
+      const recurring = prev.filter(t => t.recurring);
+      const formatted = newTasks.map((t, index) => ({
+        id: `ai-${Date.now()}-${index}`,
+        ...t
+      }));
+      return [...formatted, ...recurring];
+    });
+    handleAddToast('WBCS AI daily study sequence loaded successfully into active boards!', 'success');
+  };
+
   // Spacer repetitions loop marks
   const handleCompleteRevision = (id: string, nextInterval?: 1 | 7 | 21) => {
     setRevisions(prev => prev.map(item => {
@@ -441,21 +455,27 @@ export default function App() {
         subjects={subjects}
         notes={notes}
         tasks={tasks}
-        onNavigateToTab={(tabId) => setActiveTab(tabId)}
+        onNavigateToTab={(tabId) => {
+          setActiveTab(tabId);
+          setMobileMenuOpen(false);
+        }}
         onAddToast={handleAddToast}
+        onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
       />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Collapsible Left Sidebar */}
         <Sidebar 
           activeTab={activeTab} 
           onSelectTab={(tabId) => setActiveTab(tabId)} 
           collapsed={sidebarCollapsed}
           onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+          mobileOpen={mobileMenuOpen}
+          onCloseMobile={() => setMobileMenuOpen(false)}
         />
 
         {/* Core Sub-view container */}
-        <main className="flex-1 overflow-y-auto px-6 py-8">
+        <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 md:py-8 pb-24 lg:pb-8">
           <div className="mx-auto max-w-5xl transition-all duration-300">
             {activeTab === 'dashboard' && (
               <Dashboard 
@@ -488,11 +508,14 @@ export default function App() {
               <DailyPlanner 
                 tasks={tasks}
                 subjects={subjects}
+                chapters={chapters}
+                mocks={mocks}
                 onToggleTask={handleToggleTask}
                 onAddTask={handleAddTask}
                 onDeleteTask={handleDeleteTask}
                 onSetStatus={handleSetTaskStatus}
                 onAddToast={handleAddToast}
+                onApplyGeneratedSchedule={handleApplyGeneratedSchedule}
               />
             )}
 
@@ -580,11 +603,76 @@ export default function App() {
       {/* Floating Action Button (FAB) (Material style) */}
       <button 
         onClick={() => setShowFabModal(true)}
-        className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xl hover:bg-blue-700 hover:scale-105 transition active:scale-95"
+        className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xl hover:bg-blue-700 hover:scale-105 transition active:scale-95"
         title="Quick micro-note draft capture"
       >
         <Plus className="h-6 w-6" />
       </button>
+
+      {/* Mobile & Tablet Elegant Bottom Navigation Bar */}
+      <nav id="mobile-bottom-nav" className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-gray-100 bg-white/95 backdrop-blur-md px-4 shadow-lg lg:hidden">
+        <button
+          onClick={() => {
+            setActiveTab('dashboard');
+            setMobileMenuOpen(false);
+          }}
+          className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
+            activeTab === 'dashboard' ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <LayoutDashboard className="h-5 w-5" />
+          <span className="text-[10px]">Dashboard</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setActiveTab('subjects');
+            setMobileMenuOpen(false);
+          }}
+          className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
+            activeTab === 'subjects' ? 'text-emerald-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <BookOpen className="h-5 w-5" />
+          <span className="text-[10px]">Syllabus</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setActiveTab('planner');
+            setMobileMenuOpen(false);
+          }}
+          className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
+            activeTab === 'planner' ? 'text-amber-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Calendar className="h-5 w-5" />
+          <span className="text-[10px]">Planner</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setActiveTab('mocks');
+            setMobileMenuOpen(false);
+          }}
+          className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
+            activeTab === 'mocks' ? 'text-rose-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Award className="h-5 w-5" />
+          <span className="text-[10px]">Mocks</span>
+        </button>
+
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 text-center transition-colors ${
+            mobileMenuOpen ? 'text-blue-600 font-bold' : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Menu className="h-5 w-5" />
+          <span className="text-[10px]">All Menus</span>
+        </button>
+      </nav>
 
       {/* FAB Modal popup */}
       {showFabModal && (
