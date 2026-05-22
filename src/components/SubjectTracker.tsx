@@ -13,9 +13,9 @@ import {
   Trash2, 
   FolderOpen, 
   Save, 
-  Sparkles,
   Search,
-  Filter
+  Filter,
+  GraduationCap
 } from 'lucide-react';
 import { Subject, Chapter } from '../types';
 
@@ -404,7 +404,7 @@ export default function SubjectTracker({
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-gray-900 flex items-center gap-1.5 text-base">
-                <Sparkles className="h-4.5 w-4.5 text-blue-600" /> Configure Optional Subject
+                <GraduationCap className="h-5 w-5 text-blue-600" /> Configure Optional Subject
               </h3>
               <button 
                 onClick={() => setShowOptionalModal(false)}

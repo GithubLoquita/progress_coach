@@ -680,7 +680,7 @@ export default function App() {
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-extrabold text-gray-900 flex items-center gap-1.5 text-base">
-                <Sparkles className="h-4.5 w-4.5 text-blue-600 animate-pulse" /> Capture Quick Revision Note
+                <BookOpen className="h-4.5 w-4.5 text-blue-600 animate-pulse" /> Capture Quick Revision Note
               </h3>
               <button 
                 onClick={() => setShowFabModal(false)}

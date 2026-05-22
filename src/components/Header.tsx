@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Search, Flame, Bell, Sparkles, Command, SlidersHorizontal, BookOpen, Clock, Menu } from 'lucide-react';
+import { Search, Flame, Bell, Sparkles, Command, SlidersHorizontal, BookOpen, Clock, Menu, GraduationCap } from 'lucide-react';
 import { Subject, DailyTask, StudyNote } from '../types';
 
 interface HeaderProps {
@@ -74,7 +74,7 @@ export default function Header({
           </button>
         )}
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-soft shrink-0">
-          <Sparkles className="h-5 w-5" />
+          <GraduationCap className="h-6 w-6 text-white stroke-[2.2]" />
         </div>
         <div>
           <h1 className="text-sm md:text-lg font-semibold tracking-tight text-gray-900 whitespace-nowrap">

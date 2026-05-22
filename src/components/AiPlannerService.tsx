@@ -15,7 +15,8 @@ import {
   Compass, 
   RotateCw, 
   Award,
-  BookOpen
+  BookOpen,
+  GraduationCap
 } from 'lucide-react';
 import { Subject, Chapter, MockTest, DailyTask } from '../types';
 
@@ -192,7 +193,7 @@ export default function AiPlannerService({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-gray-100 pb-4">
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md animate-pulse">
-            <Sparkles className="h-6 w-6" />
+            <GraduationCap className="h-6 w-6" />
           </div>
           <div>
             <h3 className="text-base font-black text-gray-900 flex items-center gap-1.5">
@@ -304,7 +305,7 @@ export default function AiPlannerService({
         <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center space-y-4">
           <div className="inline-block relative">
             <div className="h-14 w-14 rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin" />
-            <Sparkles className="h-5 w-5 text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-scale-up" />
+            <GraduationCap className="h-5 w-5 text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-scale-up" />
           </div>
           <div className="space-y-1">
             <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest">Gemini is Thinking...</h4>
