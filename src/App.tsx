@@ -490,6 +490,7 @@ export default function App() {
                 onToggleTask={handleToggleTask}
                 onQuickLogHours={handleQuickLogHours}
                 onQuickClearReminders={handleQuickClearReminders}
+                onAddToast={handleAddToast}
               />
             )}
 

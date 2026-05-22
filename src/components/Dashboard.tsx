@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { Subject, Chapter, DailyTask, RevisionItem, MockTest, Reminder } from '../types';
 import { MOTIVATIONAL_QUOTES } from '../mockData';
+import PomodoroWidget from './PomodoroWidget';
 
 interface DashboardProps {
   subjects: Subject[];
@@ -35,6 +36,7 @@ interface DashboardProps {
   onToggleTask: (taskId: string) => void;
   onQuickLogHours: (hours: number) => void;
   onQuickClearReminders: () => void;
+  onAddToast: (msg: string, type: 'success' | 'info' | 'warning' | 'error') => void;
 }
 
 export default function Dashboard({
@@ -48,7 +50,8 @@ export default function Dashboard({
   onNavigateToTab,
   onToggleTask,
   onQuickLogHours,
-  onQuickClearReminders
+  onQuickClearReminders,
+  onAddToast
 }: DashboardProps) {
   const [logHoursVal, setLogHoursVal] = useState<number>(2);
   const [randomQuote] = useState(() => {
@@ -269,9 +272,9 @@ export default function Dashboard({
       </div>
 
       {/* Main Row: Planner & Targets Side-by-side */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-3">
         {/* Today's study schedule block list */}
-        <div className="md:col-span-2 rounded-3xl bg-white p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
+        <div className="lg:col-span-2 rounded-3xl bg-white p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -345,67 +348,78 @@ export default function Dashboard({
           </div>
         </div>
 
-        {/* Upcoming targets / checklists tracker */}
-        <div className="rounded-3xl bg-white p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                <Layers className="h-5 w-5 text-blue-500" />
-                <span>Coach Reminders ({activeReminders.length})</span>
-              </h3>
-              {activeReminders.length > 0 && (
-                <button 
-                  onClick={onQuickClearReminders}
-                  className="text-[11px] font-bold text-blue-600 hover:underline"
-                >
-                  Dismiss Done
-                </button>
-              )}
-            </div>
+        {/* Right side widgets stack */}
+        <div className="lg:col-span-1 space-y-6">
+          {/* Pomodoro focus timer linked directly to Log Hours and Tasks */}
+          <PomodoroWidget 
+            tasks={tasks}
+            onToggleTask={onToggleTask}
+            onQuickLogHours={onQuickLogHours}
+            onAddToast={onAddToast}
+          />
 
-            <div className="space-y-3">
-              {activeReminders.length === 0 ? (
-                <div className="text-center py-10 text-xs text-gray-400">
-                  All milestones and reminders cleared! Clear mindset ahead.
-                </div>
-              ) : (
-                activeReminders.map((rem) => (
-                  <div key={rem.id} className="flex gap-3 items-start p-3 bg-gray-50/50 rounded-2xl border border-gray-100">
-                    <span className={`mt-0.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${
-                      rem.type === 'REVISION' ? 'bg-purple-50 text-purple-700 border border-purple-100' :
-                      rem.type === 'MOCK' ? 'bg-rose-50 text-rose-700 border border-rose-100' :
-                      rem.type === 'BACKLOG' ? 'bg-amber-50 text-amber-900 border border-amber-200' :
-                      'bg-indigo-50 text-indigo-700 border border-indigo-100'
-                    }`}>
-                      {rem.type}
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-xs font-semibold text-gray-700">{rem.title}</p>
-                      <span className="text-[9px] font-bold text-gray-400">Due {rem.date}</span>
-                    </div>
+          {/* Upcoming targets / checklists tracker */}
+          <div className="rounded-3xl bg-white p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                  <Layers className="h-5 w-5 text-blue-500" />
+                  <span>Coach Reminders ({activeReminders.length})</span>
+                </h3>
+                {activeReminders.length > 0 && (
+                  <button 
+                    onClick={onQuickClearReminders}
+                    className="text-[11px] font-bold text-blue-600 hover:underline"
+                  >
+                    Dismiss Done
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-3">
+                {activeReminders.length === 0 ? (
+                  <div className="text-center py-10 text-xs text-gray-400">
+                    All milestones and reminders cleared! Clear mindset ahead.
                   </div>
-                ))
-              )}
+                ) : (
+                  activeReminders.map((rem) => (
+                    <div key={rem.id} className="flex gap-3 items-start p-3 bg-gray-50/50 rounded-2xl border border-gray-100">
+                      <span className={`mt-0.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${
+                        rem.type === 'REVISION' ? 'bg-purple-50 text-purple-700 border border-purple-100' :
+                        rem.type === 'MOCK' ? 'bg-rose-50 text-rose-700 border border-rose-100' :
+                        rem.type === 'BACKLOG' ? 'bg-amber-50 text-amber-900 border border-amber-200' :
+                        'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                      }`}>
+                        {rem.type}
+                      </span>
+                      <div className="flex-1">
+                        <p className="text-xs font-semibold text-gray-700">{rem.title}</p>
+                        <span className="text-[9px] font-bold text-gray-400">Due {rem.date}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="mt-5">
-            <div className="rounded-2xl bg-slate-50 p-3 text-center border border-slate-100">
-              <p className="text-[10px] font-bold text-slate-500">KNOWLEDGE TARGET STATUS</p>
-              <div className="mt-2 flex items-center justify-center gap-4">
-                <div className="text-center">
-                  <span className="block text-sm font-bold text-slate-800">{completedChapters}</span>
-                  <span className="text-[9px] text-slate-400 uppercase">Completed</span>
-                </div>
-                <div className="h-6 w-px bg-slate-200" />
-                <div className="text-center">
-                  <span className="block text-sm font-bold text-blue-600">{inProgressChapters}</span>
-                  <span className="text-[9px] text-slate-400 uppercase">Active Now</span>
-                </div>
-                <div className="h-6 w-px bg-slate-200" />
-                <div className="text-center">
-                  <span className="block text-sm font-bold text-slate-400">{totalChapters - completedChapters - inProgressChapters}</span>
-                  <span className="text-[9px] text-slate-400 uppercase">Remaining</span>
+            <div className="mt-5">
+              <div className="rounded-2xl bg-slate-50 p-3 text-center border border-slate-100">
+                <p className="text-[10px] font-bold text-slate-500">KNOWLEDGE TARGET STATUS</p>
+                <div className="mt-2 flex items-center justify-center gap-4">
+                  <div className="text-center">
+                    <span className="block text-sm font-bold text-slate-800">{completedChapters}</span>
+                    <span className="text-[9px] text-slate-400 uppercase">Completed</span>
+                  </div>
+                  <div className="h-6 w-px bg-slate-200" />
+                  <div className="text-center">
+                    <span className="block text-sm font-bold text-blue-600">{inProgressChapters}</span>
+                    <span className="text-[9px] text-slate-400 uppercase">Active Now</span>
+                  </div>
+                  <div className="h-6 w-px bg-slate-200" />
+                  <div className="text-center">
+                    <span className="block text-sm font-bold text-slate-400">{totalChapters - completedChapters - inProgressChapters}</span>
+                    <span className="text-[9px] text-slate-400 uppercase">Remaining</span>
+                  </div>
                 </div>
               </div>
             </div>
