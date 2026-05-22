@@ -1,0 +1,6 @@
+{
+  "name": "WBCS Preparation Progress Management System",
+  "description": "A comprehensive, highly polished progress tracker and dashboard customized for WBCS (West Bengal Civil Service) exam prep, with Material Design 3 interfaces.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
